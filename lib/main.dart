@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'homePage.dart';
 
 void main() {
   runApp(const MyApp());
@@ -39,13 +40,16 @@ class _LoginScreenState extends State<LoginScreen> {
     _userController.text = '';
     _passwordController.text = '';
   }
-  
-  void loginValidate() {
+
+  Future<void> loginValidate() async {
     String user = _userController.text;
     String password = _passwordController.text;
 
     if (user == 'admin' && password == 'admin123') {
-      succesfulLogin(context);
+      await succesfulLogin(context);
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => HomePage()),
+      );
     } else {
       badLogin(context);
     }
@@ -136,7 +140,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  void succesfulLogin(BuildContext context) {
+  Future<void> succesfulLogin(BuildContext context) async {
     Widget okButton = TextButton(
       child: const Text("OK"),
       onPressed: () {
@@ -150,7 +154,7 @@ class _LoginScreenState extends State<LoginScreen> {
         okButton,
       ],
     );
-    showDialog(
+    await showDialog(
       context: context,
       builder: (BuildContext context) {
         return alerta;
@@ -167,7 +171,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
     AlertDialog alerta = AlertDialog(
       title: const Text("Login"),
-      content: const Text("Login errado, tente novamente"),
+      content: const Text("Login incorreto, tente novamente"),
       actions: [
         okButton,
       ],
