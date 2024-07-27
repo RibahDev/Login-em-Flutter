@@ -1,3 +1,5 @@
+//Obs: Usuário:admin  Senha:admin123
+
 import 'package:flutter/material.dart';
 import 'homePage.dart';
 
@@ -11,7 +13,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: LoginScreen(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const LoginScreen(),
+        '/home': (context) => const HomePage(),
+      },
       debugShowCheckedModeBanner: false,
     );
   }
@@ -26,7 +32,6 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
   final TextEditingController _userController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
@@ -46,10 +51,8 @@ class _LoginScreenState extends State<LoginScreen> {
     String password = _passwordController.text;
 
     if (user == 'admin' && password == 'admin123') {
-      await succesfulLogin(context);
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => HomePage()),
-      );
+      await successfulLogin(context);
+      Navigator.pushReplacementNamed(context, '/home');
     } else {
       badLogin(context);
     }
@@ -61,7 +64,7 @@ class _LoginScreenState extends State<LoginScreen> {
       appBar: buildAppBar(),
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(20.0),
         child: buildForm(),
       ),
     );
@@ -140,7 +143,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Future<void> succesfulLogin(BuildContext context) async {
+  Future<void> successfulLogin(BuildContext context) async {
     Widget okButton = TextButton(
       child: const Text("OK"),
       onPressed: () {
